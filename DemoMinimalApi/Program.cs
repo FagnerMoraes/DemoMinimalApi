@@ -34,7 +34,22 @@ app.MapGet("/fornecedores/{id}", async (
         is Fornecedor fornecedor
         ? Results.Ok(fornecedor)
         : Results.NotFound())
+    .Produces<Fornecedor>(StatusCodes.Status200OK)
+    .Produces(StatusCodes.Status400BadRequest)
     .WithName("GetFornecedoresPorId")
+    .WithTags("Fornecedor");
+
+app.MapPost("/fornecedor", async (
+    MinimalContextDb context,
+    Fornecedor fornecedor) =>
+{
+    context.Fornecedores.Add(fornecedor);
+    var result = await context.SaveChangesAsync();
+
+})
+    .Produces<Fornecedor>(StatusCodes.Status201Created)
+    .Produces(StatusCodes.Status400BadRequest)
+    .WithName("PostFornecedor")
     .WithTags("Fornecedor");
 
 app.Run();
